@@ -1,0 +1,22 @@
+{
+  "name": "chirstmas-giveaway-api",
+  "version": "0.1.0",
+  "main": "index.js",
+  "type": "module",
+  "engines": { "node" : "18.x"},
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon src/index.js",
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1",
+    "prisma": "^5.6.0"
+  }
+}
