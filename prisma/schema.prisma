@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,6 +11,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model participantes {
+model User {
   id Int @id @default(autoincrement())
+  username String @unique
+  email String @unique
+  password String
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
 }

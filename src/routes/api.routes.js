@@ -2,6 +2,7 @@ import {Router} from "express";
 import connection from "../libs/dbConnection.js"
 const router = new Router();
 router.get('/', async (req, res) => {
+  console.log("HELLO!")
   try {
     // obtiene el primer elemento de vistas de la base de datos
     const participantes = await connection.participantes.findFirst()

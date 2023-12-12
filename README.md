@@ -92,16 +92,3 @@ npx prisma migrate dev --name nombremigracion
 ```
 "postinstall": "prisma generate" 
 ```
-
-## Render.com Deploy
-
-instalar el CLI de render
-```
-npm i -g ??
-```
-
-CMD >_
-```
-??
-```
-Seguir los pasos para subir un proyecto existente o nuevo proyecto
