@@ -90,5 +90,7 @@ npx prisma migrate dev --name nombremigracion
 * Scrip: */package.json* para hacer deploy de la nueva migracion
 
 ```
-"postinstall": "prisma generate" 
+"cli": "prisma generate" 
 ```
+
+Este comando genera el cliente Prisma según su esquema y lo pone a disposición para su uso en su aplicación.
