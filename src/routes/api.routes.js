@@ -6,8 +6,8 @@ router.get('/', async (req, res) => {
   console.log("GET from localhost:3000")
   try {
     // obtiene el primer elemento de vistas de la base de datos
-    
-    res.json({"hello": "world"})
+    const data = await connection.user.findFirst();
+    res.json(data)
   } catch (error) {
     res.json(error)
   }
@@ -15,13 +15,34 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    // crea una nueva fila en la base de datos, recibe solo el para metro "count" que es un valor inicial para el contador de 'vistas'
-    const participantes = await connection.participantes.create({
-      data: req.body
-    });
-    res.json(participantes);
+
+    const {email, username, password} = req.body;
+    const userFound = await connection.user.findUnique({
+      where: { username }
+    })
+    const emailFound = await connection.user.findUnique({
+      where: { email }
+    })
+
+    if (userFound) { // si ya existe un mismo dato de email, inica que el dato es incorrecto
+      res.status(400).json({message: "User already exist"})
+    } else if(emailFound) {
+      res.status(400).json({message: "Email already exist"})
+    } else { // de lo contrario
+      const encryptedPassword = await bcrypt.hash(password, 10); // encripta el password
+      // crea una nueva fila en la base de datos "user"
+      const newUser = await connection.user.create({
+        data: {
+          username, email, password: encryptedPassword
+        }
+      });
+      // se copian todos los datos del nuevo usuario exepto el password
+      const {password: _, ...safeUser} = newUser;
+      res.json(safeUser);
+    }
+
   } catch (error) {
-    res.json(error)
+    res.status(500).json({message: error.message});
   }
 });
 
