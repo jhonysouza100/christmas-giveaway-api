@@ -10,7 +10,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "cli": "prisma generate"
+    "cli": "prisma generate",
+    "migrate": "prisma migrate dev --name init"
   },
   "dependencies": {
     "@prisma/client": "^5.7.0",

@@ -1,12 +1,13 @@
 import {Router} from "express";
 import connection from "../libs/dbConnection.js"
+import bcrypt from "bcrypt";
 const router = new Router();
 
 router.get('/', async (req, res) => {
   console.log("GET from localhost:3000")
   try {
     // obtiene el primer elemento de vistas de la base de datos
-    const data = await connection.user.findFirst();
+    const data = await connection.user.findMany();
     res.json(data)
   } catch (error) {
     res.json(error)
@@ -16,7 +17,9 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
 
-    const {email, username, password} = req.body;
+    const {email, username, picture} = req.body;
+    
+    // busca si el usuario existe en la base de datos
     const userFound = await connection.user.findUnique({
       where: { username }
     })
@@ -29,16 +32,14 @@ router.post('/', async (req, res) => {
     } else if(emailFound) {
       res.status(400).json({message: "Email already exist"})
     } else { // de lo contrario
-      const encryptedPassword = await bcrypt.hash(password, 10); // encripta el password
       // crea una nueva fila en la base de datos "user"
       const newUser = await connection.user.create({
         data: {
-          username, email, password: encryptedPassword
+          username, email, picture
         }
       });
-      // se copian todos los datos del nuevo usuario exepto el password
-      const {password: _, ...safeUser} = newUser;
-      res.json(safeUser);
+      
+      res.json(newUser);
     }
 
   } catch (error) {
