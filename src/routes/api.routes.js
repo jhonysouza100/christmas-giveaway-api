@@ -20,16 +20,12 @@ router.post('/', async (req, res) => {
     const {email, username, picture} = req.body;
     
     // busca si el usuario existe en la base de datos
-    const userFound = await connection.user.findUnique({
-      where: { username }
-    })
     const emailFound = await connection.user.findUnique({
       where: { email }
     })
 
-    if (userFound) { // si ya existe un mismo dato de email, inica que el dato es incorrecto
-      res.status(400).json({message: "User already exist"})
-    } else if(emailFound) {
+    // si ya existe un mismo dato de email, inica que el dato es incorrecto
+    if(emailFound) {
       res.status(400).json({message: "Email already exist"})
     } else { // de lo contrario
       // crea una nueva fila en la base de datos "user"
@@ -51,7 +47,7 @@ router.put('/', async (req, res) => {
   try {
     // actualiza el contador, el "body" recibe un 'id' y un 'numero' que es el que incrementa el numero de vistas
     const {id, count} = req.body
-    const participantes = await connection.participantes.update({
+    const participantes = await connection.user.update({
       where: { 
         id: Number(id)
       },
@@ -69,7 +65,7 @@ router.delete('/', async (req, res) => {
   try {
     // elimina una fila, el "body" recibe un 'id' que identifica la fila a eliminar
     const {id} = req.body
-    const participantes = await connection.participantes.delete({
+    const participantes = await connection.user.delete({
       where: {
         id: Number(id)
       }
