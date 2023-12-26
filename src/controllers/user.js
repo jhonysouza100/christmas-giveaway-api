@@ -1,24 +1,27 @@
 import connection from "../connection/dbConnect.js"
 import bcrypt from "bcrypt";
 
-
-
 const getAllUsers = async (req, res) => {
+
+  // obtener ganador
   const getWinner = (arg) => {
     const $players = arg,
           random = Math.floor(Math.random() * $players.length),
-          winner = $players[random]
-    return winner
+          winner = [];
+          winner.push($players[random]);
+    return winner;
   }
-  console.log("GET from localhost:3000")
+
+  console.log("GET from localhost:3000");
+
   try {
     // obtiene el primer elemento de vistas de la base de datos
     const data = await connection.user.findMany();
     const draw = getWinner(data);
-    res.json(JSON.stringify(draw));
-    // res.json(data)
+    res.json(draw);
+    // res.json(data);
   } catch (error) {
-    res.json(error)
+    res.json(error);
   }
 }
 
